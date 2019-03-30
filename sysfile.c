@@ -16,6 +16,8 @@
 #include "file.h"
 #include "fcntl.h"
 #include "paging.h"
+#include "x86.h"
+#include "memlayout.h"
 
 extern int numallocblocks;
 
@@ -452,18 +454,49 @@ sys_pipe(void)
 int
 sys_bstat(void)
 {
-	return numallocblocks;
+  return numallocblocks;
+}
+
+static pte_t *
+walkpgdir(pde_t *pgdir, const void *va)
+{
+  pde_t *pde;
+  pte_t *pgtab;
+
+  pde = &pgdir[PDX(va)];
+  if(*pde & PTE_P) pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
+  else panic("HAW; Swapping a Page which is NOT PRESENT!");
+  return &pgtab[PTX(va)];
 }
 
 /* swap system call handler.
+ * 
+ * takes a user virtual address of the current process to swap
  */
 int
 sys_swap(void)
 {
   uint addr;
 
+  // Fetch the 0th 32-bit system call argument 
+  // and assign its value to addr
   if(argint(0, (int*)&addr) < 0)
     return -1;
+
   // swap addr
+  // begin_op();//Would we need this?
+
+  //(char *) typecasting toh nahi chahiye?
+  pte_t *pte = walkpgdir(myproc()->pgdir,(void *)addr);
+  swap_page_from_pte(pte);
+
+  // Invalidate the TLB corresponding to the swapped virtual page.
+  // Reloading the cr3 register should cause a TLB Flush
+  lcr3(V2P(myproc()->pgdir));
+
+  // Free the physical page.
+  kfree((char *)PTE_ADDR(*pte));
+  // end_op();
+
   return 0;
 }
