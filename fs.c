@@ -85,6 +85,45 @@ balloc(uint dev)
 uint
 balloc_page(uint dev)
 {
+  int b, bi, m;
+  struct buf *bp;
+
+  bp = 0;//buffer pointer
+
+  //sb is superblock, it is a global variable in this file
+  //sb.size -> number of blocks in file system
+  //BPB -> Bitmap bits per block = 512*8
+  for(b = 0; b < sb.size; b += BPB){
+    bp = bread(dev, BBLOCK(b, sb));
+
+    int free_counter = 0;
+    int byte_base = 0;
+    for(bi = 0; bi < BPB && b + bi < sb.size; bi++){
+      m = 1 << (bi % 8);
+      if((bp->data[bi/8] & m) == 0){  // Is block free?
+        free_counter++;
+
+        if(free_counter==8){ //found 8 consecutive free blocks
+          for(int i = byte_base; i < byte_base+8; i++){
+            m = 1 << (i%8);
+            bp->data[i/8] |= m;  // Mark block in use.
+
+            //check if we should do this after brelse
+            bzero(dev, b + i); //memsets the block with 0s
+          }
+          log_write(bp);
+          brelse(bp);
+          return b + byte_base;
+        }
+      }
+      else {
+        free_counter=0;
+        byte_base = bi + 1;
+      }
+    }
+    brelse(bp);
+  }
+  panic("balloc: out of 8 blocks, on disk");
 	return -1;
 }
 

@@ -456,14 +456,45 @@ sys_bstat(void)
 }
 
 /* swap system call handler.
+ * 
+ * takes a user virtual address of the current process to swap
  */
 int
 sys_swap(void)
 {
   uint addr;
 
+  // Fetch the 0th 32-bit system call argument 
+  // and assign its value to addr
   if(argint(0, (int*)&addr) < 0)
     return -1;
+
   // swap addr
+
+  //Assuming that the dev ID for HDD is 1. To check if this is wrong
+  //allocates 4 KB consecutive disk space and returns the address of first disk block.
+  // uint first_block_allocated = balloc_page(1);//is it 0?
+
+  // bwrite();
+  // Save the content of the virtual page to a disk page. It is okay for this
+  // assignment to use buffer cache APIs to read/write swapped blocks.
+
+  // Mark the page-table entry corresponding to the swapped virtual page as
+  // invalid.
+
+  // Save the block id of the swapped location in the page-table entry itself.
+  // Reserve some bits in the page-table entry to identify a swapped page.
+
+  // Invalidate the TLB corresponding to the swapped virtual page.
+
+  // Free the physical page.
+
+  // sys_swap, 
+  // balloc_page, 
+  // balloc_free, 
+  // write page to disk, 
+  // read page from disk, 
+  // swap page from pte.
+
   return 0;
 }
