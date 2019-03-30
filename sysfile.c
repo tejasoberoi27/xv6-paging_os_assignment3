@@ -16,6 +16,8 @@
 #include "file.h"
 #include "fcntl.h"
 #include "paging.h"
+#include "x86.h"
+#include "memlayout.h"
 
 extern int numallocblocks;
 
@@ -452,7 +454,19 @@ sys_pipe(void)
 int
 sys_bstat(void)
 {
-	return numallocblocks;
+  return numallocblocks;
+}
+
+static pte_t *
+walkpgdir(pde_t *pgdir, const void *va)
+{
+  pde_t *pde;
+  pte_t *pgtab;
+
+  pde = &pgdir[PDX(va)];
+  if(*pde & PTE_P) pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
+  else panic("HAW; Swapping a Page which is NOT PRESENT!");
+  return &pgtab[PTX(va)];
 }
 
 /* swap system call handler.
@@ -470,31 +484,19 @@ sys_swap(void)
     return -1;
 
   // swap addr
+  // begin_op();//Would we need this?
 
-  //Assuming that the dev ID for HDD is 1. To check if this is wrong
-  //allocates 4 KB consecutive disk space and returns the address of first disk block.
-  // uint first_block_allocated = balloc_page(1);//is it 0?
-
-  // bwrite();
-  // Save the content of the virtual page to a disk page. It is okay for this
-  // assignment to use buffer cache APIs to read/write swapped blocks.
-
-  // Mark the page-table entry corresponding to the swapped virtual page as
-  // invalid.
-
-  // Save the block id of the swapped location in the page-table entry itself.
-  // Reserve some bits in the page-table entry to identify a swapped page.
+  //(char *) typecasting toh nahi chahiye?
+  pte_t *pte = walkpgdir(myproc()->pgdir,(void *)addr);
+  swap_page_from_pte(pte);
 
   // Invalidate the TLB corresponding to the swapped virtual page.
+  // Reloading the cr3 register should cause a TLB Flush
+  lcr3(V2P(myproc()->pgdir));
 
   // Free the physical page.
-
-  // sys_swap, 
-  // balloc_page, 
-  // balloc_free, 
-  // write page to disk, 
-  // read page from disk, 
-  // swap page from pte.
+  kfree((char *)PTE_ADDR(*pte));
+  // end_op();
 
   return 0;
 }
