@@ -132,6 +132,8 @@ balloc_page(uint dev)
 void
 bfree_page(int dev, uint b)
 {
+  for(int i=0; i<8; i++)
+    bfree(dev,b+i);
 }
 
 // Free a disk block.
