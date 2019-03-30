@@ -97,14 +97,14 @@ balloc_page(uint dev)
     bp = bread(dev, BBLOCK(b, sb));
 
     int free_counter = 0;
-    int byte_base = 0;
+    int byte_base = 0,i;
     for(bi = 0; bi < BPB && b + bi < sb.size; bi++){
       m = 1 << (bi % 8);
       if((bp->data[bi/8] & m) == 0){  // Is block free?
         free_counter++;
 
         if(free_counter==8){ //found 8 consecutive free blocks
-          for(int i = byte_base; i < byte_base+8; i++){
+          for(i = byte_base; i < byte_base+8; i++){
             m = 1 << (i%8);
             bp->data[i/8] |= m;  // Mark block in use.
 
@@ -127,15 +127,6 @@ balloc_page(uint dev)
 	return -1;
 }
 
-/* Free disk blocks allocated using balloc_page.
- */
-void
-bfree_page(int dev, uint b)
-{
-  for(int i=0; i<8; i++)
-    bfree(dev,b+i);
-}
-
 // Free a disk block.
 static void
 bfree(int dev, uint b)
@@ -152,6 +143,16 @@ bfree(int dev, uint b)
   bp->data[bi/8] &= ~m;
   log_write(bp);
   brelse(bp);
+}
+
+/* Free disk blocks allocated using balloc_page.
+ */
+void
+bfree_page(int dev, uint b)
+{
+  int i;
+  for(i=0; i<8; i++)
+    bfree(dev,b+i);
 }
 
 // Inodes.

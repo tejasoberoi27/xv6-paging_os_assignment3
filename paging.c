@@ -29,12 +29,8 @@ swap_page_from_pte(pte_t *pte)
 
 	//mark the pte as invalid(->present bit=>false)
 	//last bit is present bit
-	assert(pte&0xfffffffe == pte&(~PTE_P));
-	assert(pte|0x00000200 == pte|PTE_SWAPPED);
-	// pte &= 0xfffffffe;
-	// pte |= 0x00000200;
-	pte &= ~PTE_P;
-	pte |= PTE_SWAPPED;
+	*pte &= ~PTE_P;
+	*pte |= PTE_SWAPPED;
 }
 
 /* Select a victim and swap the contents to the disk.

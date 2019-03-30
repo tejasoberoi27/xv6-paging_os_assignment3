@@ -118,10 +118,10 @@ void
 read_page_from_disk(uint dev, char *pg, uint blk)
 {
   struct buf *bp;
-  int pgIndex = 0;
-  for(int i=0; i<8; i++){
+  int pgIndex = 0,i,j;
+  for(i=0; i<8; i++){
     bp = bread(1,blk+i);
-    for(int j=0; j<BSIZE; j++) pg[pgIndex++] = bp->data[j];
+    for(j=0; j<BSIZE; j++) pg[pgIndex++] = bp->data[j];
     brelse(bp);
   }
 }
