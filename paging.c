@@ -18,6 +18,23 @@
 void
 swap_page_from_pte(pte_t *pte)
 {
+	uint blk = balloc_page(1);
+	uint physicalPageAddress = PTE_ADDR(*pte);
+
+	//is P2V... actually the address of the page? CHECK
+	write_page_to_disk(1,P2V(physicalPageAddress),blk);
+
+	//save block-id in pte
+	*pte = blk<<12 | PTE_FLAGS(*pte);
+
+	//mark the pte as invalid(->present bit=>false)
+	//last bit is present bit
+	assert(pte&0xfffffffe == pte&(~PTE_P));
+	assert(pte|0x00000200 == pte|PTE_SWAPPED);
+	// pte &= 0xfffffffe;
+	// pte |= 0x00000200;
+	pte &= ~PTE_P;
+	pte |= PTE_SWAPPED;
 }
 
 /* Select a victim and swap the contents to the disk.
