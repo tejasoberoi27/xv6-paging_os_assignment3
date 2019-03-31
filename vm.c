@@ -307,17 +307,12 @@ freevm(pde_t *pgdir)
 pte_t*
 select_a_victim(pde_t *pgdir)
 {
-  cprintf("select_a_victim\n");
   uint i, totAllocPages = 0;
   pte_t *pte;
 
   for(i=0; i<KERNBASE-PGSIZE; i+=PGSIZE){
-    if(i%1000==0)
-      cprintf("in for i:%d\n",i);
     if( (pte = walkpgdir(pgdir,(void *)i,0)) == 0)
       continue;
-    if(i%1000==0)
-    cprintf("*pte: %x\n",*pte);
 
     if( (*pte) & PTE_P ){ //if PTE_P == 1
       totAllocPages++;
@@ -325,10 +320,8 @@ select_a_victim(pde_t *pgdir)
       if( (*pte) & PTE_SWAPPED )
         panic("Swapped Yes, Present Yes");
 
-      if( !( (*pte) & PTE_A) ){ //if PTE_A == 0
-        cprintf("returning from select_a_victim\n");
+      if( !( (*pte) & PTE_A) ) //if PTE_A == 0
         return pte;
-      }
     }
   }
 
