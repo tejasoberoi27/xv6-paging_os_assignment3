@@ -321,7 +321,9 @@ select_a_victim(pde_t *pgdir)
   }
   for(i=0; i<((int)(0.1*totAllocPages)); i++)
     clearaccessbit(pgdir);
-	return 0;
+  select_a_victim(pgdir);
+  panic("not possible xD lol");
+  return 0;
 }
 
 // Clear access bit of a random pte.
@@ -333,6 +335,7 @@ clearaccessbit(pde_t *pgdir)
   for(i=0; i<KERNBASE; i++){
     pte = walkpgdir(pgdir,(void *)i,0);
     if((*pte & PTE_P) && (*pte & PTE_A)){
+      cprintf("clearing access bit of %x", *pte);
       *pte &= ~PTE_A;
       return;
     }

@@ -18,12 +18,14 @@
 void
 swap_page_from_pte(pte_t *pte)
 {
+  cprintf("swapping page pte %x\n", *pte);
 	uint blk = balloc_page(1);
-    cprintf("Hi ANMOL");
 	uint physicalPageAddress = PTE_ADDR(*pte);
 
 	//is P2V... actually the address of the page? CHECK
+  cprintf("Going to write\n");
 	write_page_to_disk(1,P2V(physicalPageAddress),blk);
+  cprintf("Written page to disk\n");
 
 	//save block-id in pte
 	*pte = blk<<12 | PTE_FLAGS(*pte);
@@ -32,6 +34,7 @@ swap_page_from_pte(pte_t *pte)
 	//last bit is present bit
 	*pte &= ~PTE_P;
 	*pte |= PTE_SWAPPED;
+  cprintf("SWAPPED page pte %x\n", *pte);
 }
 
 /* Select a victim and swap the contents to the disk.
@@ -40,8 +43,11 @@ int
 swap_page(pde_t *pgdir)
 {
 	pte_t *pte = select_a_victim(pgdir);
-    cprintf("Selected victim to be %d\n",*pte);
-    swap_page_from_pte(pte);
+  cprintf("Selected victim to be %x\n",*pte);
+  cprintf("Victim's P Bit %d\n",(*pte)&PTE_P);
+  cprintf("Victim's A Bit %d\n",(*pte)&PTE_A);
+  cprintf("Victim's SWAPPED Bit %d\n",(*pte)&PTE_SWAPPED);
+  swap_page_from_pte(pte);
 	return 1;
 }
 
@@ -152,6 +158,7 @@ map_address(pde_t *pgdir, uint addr)
 void
 handle_pgfault()
 {
+  // cprintf("got page fault. Handling it");
 	unsigned addr;
 	struct proc *curproc = myproc();
 

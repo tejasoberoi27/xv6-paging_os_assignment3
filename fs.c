@@ -85,6 +85,7 @@ balloc(uint dev)
 uint
 balloc_page(uint dev)
 {
+  begin_op();
   int b, bi, m;
   struct buf *bp;
 
@@ -113,6 +114,7 @@ balloc_page(uint dev)
           }
           log_write(bp);
           brelse(bp);
+          end_op();
           return b + byte_base;
         }
       }
