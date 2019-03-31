@@ -307,34 +307,30 @@ freevm(pde_t *pgdir)
 pte_t*
 select_a_victim(pde_t *pgdir)
 {
-  uint i, totAllocPages = 0; 
+  uint i, totAllocPages = 0;
   pte_t *pte;
-  for(i=0; i<KERNBASE;){
-    pte = walkpgdir(pgdir,(void *)i,0);
-    if(*pte & PTE_P)
+
+  for(i=0; i<KERNBASE; i++){
+    if( (pte = walkpgdir(pgdir,(void *)i,0)) == 0)
+      continue;
+
+    if( (*pte) & PTE_P ){ //if PTE_P == 1
       totAllocPages++;
-    if((*pte & PTE_P)&& (!(*pte & PTE_A))){
-      if((*pte)&PTE_SWAPPED) 
-        panic("Tejas says something is wrong. Swapped Yes, Present Yes");
-      cprintf("select_a_victim: %x\n",*pte);
 
-      cprintf("before\n");
-      cprintf("*pte = %x\n",*pte);
-      cprintf("PA *pte = %x\n",PTE_ADDR(*pte));
-      cprintf("VA *pte = %x\n",P2V(PTE_ADDR(*pte)));
+      if( (*pte) & PTE_SWAPPED )
+        panic("Swapped Yes, Present Yes");
 
-      //THIS GIVES AN ERROR
-      cprintf("source 0th bit virtual address = %x\n",*((char*) (P2V( PTE_ADDR(*pte) ))) );
-
-      cprintf("After\n");
-
-      return pte;
+      if( !( (*pte) & PTE_A) ) //if PTE_A == 0
+        return pte;
     }
-    i+=PGSIZE;//DO CHECK
   }
-  for(i=0; i<((int)(0.1*totAllocPages)); i++)
+
+  clearaccessbit(pgdir);
+  for(i = 0; i < ((int)(0.1*totAllocPages)); i++)
     clearaccessbit(pgdir);
+
   select_a_victim(pgdir);
+
   panic("not possible xD lol");
   return 0;
 }
@@ -345,14 +341,16 @@ clearaccessbit(pde_t *pgdir)
 {
   uint i;
   pte_t *pte;
+
   for(i=0; i<KERNBASE; i++){
-    pte = walkpgdir(pgdir,(void *)i,0);
-    if((*pte & PTE_P) && (*pte & PTE_A)){
-      cprintf("clearing access bit of %x", *pte);
+    if( (pte = walkpgdir(pgdir,(void *)i,0)) == 0 )
+      continue;
+    if( ((*pte) & PTE_P) && ((*pte) & PTE_A) ){
       *pte &= ~PTE_A;
       return;
     }
   }
+  panic("should not reach here");
 }
 
 // return the disk block-id, if the virtual address
@@ -360,10 +358,12 @@ clearaccessbit(pde_t *pgdir)
 int
 getswappedblk(pde_t *pgdir, uint va)
 {
-  pte_t *pte = walkpgdir(pgdir,(void *)va,0);
-  return (*pte)>>12;
-  // return PTE_ADDR(*pte)>>12;//CHECK
-  
+  pte_t *pte;
+  if( (pte = walkpgdir(pgdir,(void *)va,0)) == 0 )
+    panic("getswappedblk called on a va that does not have a pte");
+  if( (*pte)&PTE_SWAPPED )
+    return (*pte)>>12;
+  return -1;
 }
 
 // Clear PTE_U on a page. Used to create an inaccessible

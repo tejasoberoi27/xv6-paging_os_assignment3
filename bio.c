@@ -100,17 +100,10 @@ write_page_to_disk(uint dev, char *pg, uint blk)
 {
   struct buf *bp;
   int i;
+
   for(i=0; i<8; i++){
     bp = bread(1,blk+i);
-
-    cprintf("before memmove\n");
-    
-    cprintf("source 0th bit = %c\n",*(pg+(i*BSIZE)));
-    //THIS CAUSES AN ERROR
-
     memmove(bp->data,pg+(i*BSIZE),BSIZE);
-    cprintf("after memmove\n");
-
     bwrite(bp);
     brelse(bp);
   }
@@ -123,10 +116,11 @@ void
 read_page_from_disk(uint dev, char *pg, uint blk)
 {
   struct buf *bp;
-  int pgIndex = 0,i,j;
+  int i;
+
   for(i=0; i<8; i++){
     bp = bread(1,blk+i);
-    for(j=0; j<BSIZE; j++) pg[pgIndex++] = bp->data[j];
+    memmove(pg+(i*BSIZE),bp->data,BSIZE);
     brelse(bp);
   }
 }
