@@ -29,7 +29,10 @@ mem(void)
 		goto failed;
 	start = m1;
 
+	printf(1, "chk1\n");
+
 	while (cur < TOTAL_MEMORY) {
+		printf(1, "chk2: %d\n", cur/4096);
 		m2 = malloc(4096);
 		if (m2 == 0)
 			goto failed;
@@ -40,17 +43,20 @@ mem(void)
 	}
 	((int*)m1)[2] = count;
 	total_count = count;
+	printf(1, "chk3\n");
 
 	count = 0;
 	m1 = start;
 
 	while (count != total_count) {
+		printf(1, "chk4\n");
 		if (((int*)m1)[2] != count)
 			goto failed;
 		m1 = *(char**)m1;
 		count++;
 	}
 
+	printf(1, "chk5\n");
 	printf(1, "mem ok %d\n", bstat());
 	exit();
 failed:
