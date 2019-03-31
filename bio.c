@@ -103,12 +103,6 @@ write_page_to_disk(uint dev, char *pg, uint blk)
   for(i=0; i<8; i++){
     bp = bread(1,blk+i);
 
-    // for(j=0; j<BSIZE; j++){
-    //   // cprintf("bp->data[j]: %d\n",bp->data[j]);
-    //   // cprintf("pg[(i*BSIZE)+j]: %d\n",pg[(i*BSIZE)+j]);
-
-    //   bp->data[j]=pg[(i*BSIZE)+j];
-    // }
     memmove(bp->data,pg+(i*BSIZE),BSIZE);
 
     bwrite(bp);

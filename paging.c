@@ -31,6 +31,7 @@ swap_page_from_pte(pte_t *pte)
   // Invalidate the TLB corresponding to the swapped virtual page.
   // Reloading the cr3 register should cause a TLB Flush
   lcr3(V2P(myproc()->pgdir));
+  //maybe optimize it
 
   // Free the physical page.
   kfree(P2V(PTE_ADDR(*pte)));
@@ -137,6 +138,9 @@ map_address(pde_t *pgdir, uint addr)
         cprintf("You want me to kalloc a page in map_address huh?. Sorry I wont!\n");
         cprintf("I can swap instead :D\n");
         swap_page(pgdir);
+
+        if( (allocatedPage = kalloc()) == 0 )
+          panic("Not able to kalloc even after swap");
     }
 
     uint blkNumber;
@@ -148,16 +152,18 @@ map_address(pde_t *pgdir, uint addr)
             blkNumber = getswappedblk(pgdir, addr);
             read_page_from_disk(1,allocatedPage,blkNumber);
             
+            if(V2P(allocatedPage)!=PTE_ADDR(V2P(allocatedPage)))
+              panic("You were assuming kalloc gives page aligned but NADA :(");
             *pte = V2P(allocatedPage) | PTE_FLAGS(*pte);
 
             *pte |= PTE_P; //Setting Present Bit to 1
             *pte &= ~PTE_SWAPPED; //Setting SWAPPED Bit to 0
             bfree_page(1,blkNumber);
-        } else{
+            return;
+        } else if( (*pte) & PTE_P ){
             cprintf("((*pte) & PTE_SWAPPED):%d \n((*pte) & PTE_P):%d\n", ((*pte) & PTE_SWAPPED),((*pte) & PTE_P));
-            panic("map_address is being called on a pte which is !(SWAPPED=1,PTE_P=0)");  
+            panic("map_address is being called on a pte which is SWAPPED=0/1,PTE_P=1");  
         } 
-        return;
     }
 
     mappages(pgdir,(void *)addr,PGSIZE, V2P(allocatedPage), PTE_W|PTE_U);

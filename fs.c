@@ -152,9 +152,11 @@ bfree(int dev, uint b)
 void
 bfree_page(int dev, uint b)
 {
+  begin_op();
   int i;
   for(i=0; i<8; i++)
     bfree(dev,b+i);
+  end_op();
 }
 
 // Inodes.

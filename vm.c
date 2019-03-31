@@ -348,7 +348,8 @@ int
 getswappedblk(pde_t *pgdir, uint va)
 {
   pte_t *pte = walkpgdir(pgdir,(void *)va,0);
-  return PTE_ADDR(*pte)>>12;
+  return (*pte)>>12;
+  // return PTE_ADDR(*pte)>>12;//CHECK
   
 }
 
