@@ -18,12 +18,19 @@
 void
 swap_page_from_pte(pte_t *pte)
 {
+  cprintf("before\n");
+  cprintf("source 0th bit = %c\n",*((char*)P2V( PTE_ADDR(*pte) )) );//THIS GIVES AN ERROR
+  cprintf("After\n");
+
+  if( !( (*pte)&PTE_P ) )
+    panic("trying to swap page from pte, which is not present");
   cprintf("swapping page pte %x\n", *pte);
   uint blk = balloc_page(1);
   uint physicalPageAddress = PTE_ADDR(*pte);
 
   //is P2V... actually the address of the page? CHECK
   cprintf("Going to write\n");
+
   write_page_to_disk(1,P2V(physicalPageAddress),blk);
   cprintf("Written page to disk\n");
 
@@ -173,10 +180,12 @@ map_address(pde_t *pgdir, uint addr)
 void
 handle_pgfault()
 {
-  // cprintf("got page fault. Handling it");
+  cprintf("got page fault. Handling it\n");
   unsigned addr;
   struct proc *curproc = myproc();
 
+  //cr2 => This control register contains the linear (virtual) address 
+  //which triggered a page fault, available in the page fault's interrupt handler. 
   asm volatile ("movl %%cr2, %0 \n\t" : "=r" (addr));
   addr &= ~0xfff;
   map_address(curproc->pgdir, addr);

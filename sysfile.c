@@ -476,6 +476,7 @@ walkpgdir(pde_t *pgdir, const void *va)
 int
 sys_swap(void)
 {
+  panic("sys_swap not tested yet");
   uint addr;
 
   // Fetch the 0th 32-bit system call argument 

@@ -309,15 +309,28 @@ select_a_victim(pde_t *pgdir)
 {
   uint i, totAllocPages = 0; 
   pte_t *pte;
-  for(i=0; i<KERNBASE; i++){
+  for(i=0; i<KERNBASE;){
     pte = walkpgdir(pgdir,(void *)i,0);
     if(*pte & PTE_P)
       totAllocPages++;
     if((*pte & PTE_P)&& (!(*pte & PTE_A))){
       if((*pte)&PTE_SWAPPED) 
         panic("Tejas says something is wrong. Swapped Yes, Present Yes");
+      cprintf("select_a_victim: %x\n",*pte);
+
+      cprintf("before\n");
+      cprintf("*pte = %x\n",*pte);
+      cprintf("PA *pte = %x\n",PTE_ADDR(*pte));
+      cprintf("VA *pte = %x\n",P2V(PTE_ADDR(*pte)));
+
+      //THIS GIVES AN ERROR
+      cprintf("source 0th bit virtual address = %x\n",*((char*) (P2V( PTE_ADDR(*pte) ))) );
+
+      cprintf("After\n");
+
       return pte;
     }
+    i+=PGSIZE;//DO CHECK
   }
   for(i=0; i<((int)(0.1*totAllocPages)); i++)
     clearaccessbit(pgdir);
