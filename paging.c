@@ -19,22 +19,29 @@ void
 swap_page_from_pte(pte_t *pte)
 {
   cprintf("swapping page pte %x\n", *pte);
-	uint blk = balloc_page(1);
-	uint physicalPageAddress = PTE_ADDR(*pte);
+  uint blk = balloc_page(1);
+  uint physicalPageAddress = PTE_ADDR(*pte);
 
-	//is P2V... actually the address of the page? CHECK
+  //is P2V... actually the address of the page? CHECK
   cprintf("Going to write\n");
-	write_page_to_disk(1,P2V(physicalPageAddress),blk);
+  write_page_to_disk(1,P2V(physicalPageAddress),blk);
   cprintf("Written page to disk\n");
 
-	//save block-id in pte
-	*pte = blk<<12 | PTE_FLAGS(*pte);
+  //save block-id in pte
+  *pte = blk<<12 | PTE_FLAGS(*pte);
 
-	//mark the pte as invalid(->present bit=>false)
-	//last bit is present bit
-	*pte &= ~PTE_P;
-	*pte |= PTE_SWAPPED;
+  //mark the pte as invalid(->present bit=>false)
+  //last bit is present bit
+  *pte &= ~PTE_P;
+  *pte |= PTE_SWAPPED;
   cprintf("SWAPPED page pte %x\n", *pte);
+
+  // Invalidate the TLB corresponding to the swapped virtual page.
+  // Reloading the cr3 register should cause a TLB Flush
+  lcr3(V2P(myproc()->pgdir));
+
+  // Free the physical page.
+  kfree((char *)PTE_ADDR(*pte));
 }
 
 /* Select a victim and swap the contents to the disk.
@@ -42,13 +49,13 @@ swap_page_from_pte(pte_t *pte)
 int
 swap_page(pde_t *pgdir)
 {
-	pte_t *pte = select_a_victim(pgdir);
+  pte_t *pte = select_a_victim(pgdir);
   cprintf("Selected victim to be %x\n",*pte);
   cprintf("Victim's P Bit %d\n",(*pte)&PTE_P);
   cprintf("Victim's A Bit %d\n",(*pte)&PTE_A);
   cprintf("Victim's SWAPPED Bit %d\n",(*pte)&PTE_SWAPPED);
   swap_page_from_pte(pte);
-	return 1;
+  return 1;
 }
 
 // Return the address of the PTE in page table pgdir
@@ -159,10 +166,10 @@ void
 handle_pgfault()
 {
   // cprintf("got page fault. Handling it");
-	unsigned addr;
-	struct proc *curproc = myproc();
+  unsigned addr;
+  struct proc *curproc = myproc();
 
-	asm volatile ("movl %%cr2, %0 \n\t" : "=r" (addr));
-	addr &= ~0xfff;
-	map_address(curproc->pgdir, addr);
+  asm volatile ("movl %%cr2, %0 \n\t" : "=r" (addr));
+  addr &= ~0xfff;
+  map_address(curproc->pgdir, addr);
 }

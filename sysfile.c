@@ -484,19 +484,8 @@ sys_swap(void)
     return -1;
 
   // swap addr
-  // begin_op();//Would we need this?
-
-  //(char *) typecasting toh nahi chahiye?
   pte_t *pte = walkpgdir(myproc()->pgdir,(void *)addr);
   swap_page_from_pte(pte);
-
-  // Invalidate the TLB corresponding to the swapped virtual page.
-  // Reloading the cr3 register should cause a TLB Flush
-  lcr3(V2P(myproc()->pgdir));
-
-  // Free the physical page.
-  kfree((char *)PTE_ADDR(*pte));
-  // end_op();
 
   return 0;
 }
