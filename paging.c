@@ -33,7 +33,7 @@ swap_page_from_pte(pte_t *pte)
   lcr3(V2P(myproc()->pgdir));
 
   // Free the physical page.
-  kfree((char *)PTE_ADDR(*pte));
+  kfree(P2V(PTE_ADDR(*pte)));
 
 
   //save block-id in pte
