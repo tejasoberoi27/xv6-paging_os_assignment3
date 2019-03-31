@@ -19,6 +19,7 @@ void
 swap_page_from_pte(pte_t *pte)
 {
 	uint blk = balloc_page(1);
+    cprintf("Hi ANMOL");
 	uint physicalPageAddress = PTE_ADDR(*pte);
 
 	//is P2V... actually the address of the page? CHECK
@@ -38,7 +39,9 @@ swap_page_from_pte(pte_t *pte)
 int
 swap_page(pde_t *pgdir)
 {
-	panic("swap_page is not implemented");
+	pte_t *pte = select_a_victim(pgdir);
+    cprintf("Selected victim to be %d\n",*pte);
+    swap_page_from_pte(pte);
 	return 1;
 }
 
@@ -115,15 +118,19 @@ map_address(pde_t *pgdir, uint addr)
     char* allocatedPage;
     if( (allocatedPage = kalloc()) == 0 ){
         cprintf("allocatedPage: %d\n",allocatedPage);
-        panic("You want me to kalloc a page in map_address huh?. Sorry I wont!");
+        // panic("You want me to kalloc a page in map_address huh?. Sorry I wont!");
+        cprintf("You want me to kalloc a page in map_address huh?. Sorry I wont!\n");
+        cprintf("I can swap instead :D\n");
+        swap_page(pgdir);
     }
 
     uint blkNumber;
 
     pte_t *pte = walkpgdirDONTCreate(pgdir,(void *)addr);
     if(*pte!=0){
-        if( ((*pte) & PTE_SWAPPED) != 0 && ((*pte) & PTE_P) == 0){
-            blkNumber = PTE_ADDR(*pte)>>12;
+        if( ((*pte) & PTE_SWAPPED) && (!((*pte) & PTE_P)) ){
+
+            blkNumber = getswappedblk(pgdir, addr);
             read_page_from_disk(1,allocatedPage,blkNumber);
             
             *pte = V2P(allocatedPage) | PTE_FLAGS(*pte);

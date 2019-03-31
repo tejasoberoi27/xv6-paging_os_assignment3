@@ -307,6 +307,20 @@ freevm(pde_t *pgdir)
 pte_t*
 select_a_victim(pde_t *pgdir)
 {
+  uint i, totAllocPages = 0; 
+  pte_t *pte;
+  for(i=0; i<KERNBASE; i++){
+    pte = walkpgdir(pgdir,(void *)i,0);
+    if(*pte & PTE_P)
+      totAllocPages++;
+    if((*pte & PTE_P)&& (!(*pte & PTE_A))){
+      if((*pte)&PTE_SWAPPED) 
+        panic("Tejas says something is wrong. Swapped Yes, Present Yes");
+      return pte;
+    }
+  }
+  for(i=0; i<((int)(0.1*totAllocPages)); i++)
+    clearaccessbit(pgdir);
 	return 0;
 }
 
@@ -314,6 +328,15 @@ select_a_victim(pde_t *pgdir)
 void
 clearaccessbit(pde_t *pgdir)
 {
+  uint i;
+  pte_t *pte;
+  for(i=0; i<KERNBASE; i++){
+    pte = walkpgdir(pgdir,(void *)i,0);
+    if((*pte & PTE_P) && (*pte & PTE_A)){
+      *pte &= ~PTE_A;
+      return;
+    }
+  }
 }
 
 // return the disk block-id, if the virtual address
@@ -321,7 +344,9 @@ clearaccessbit(pde_t *pgdir)
 int
 getswappedblk(pde_t *pgdir, uint va)
 {
-  return -1;
+  pte_t *pte = walkpgdir(pgdir,(void *)va,0);
+  return PTE_ADDR(*pte)>>12;
+  
 }
 
 // Clear PTE_U on a page. Used to create an inaccessible
