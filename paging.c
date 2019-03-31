@@ -27,6 +27,15 @@ swap_page_from_pte(pte_t *pte)
   write_page_to_disk(1,P2V(physicalPageAddress),blk);
   cprintf("Written page to disk\n");
 
+
+  // Invalidate the TLB corresponding to the swapped virtual page.
+  // Reloading the cr3 register should cause a TLB Flush
+  lcr3(V2P(myproc()->pgdir));
+
+  // Free the physical page.
+  kfree((char *)PTE_ADDR(*pte));
+
+
   //save block-id in pte
   *pte = blk<<12 | PTE_FLAGS(*pte);
 
@@ -35,13 +44,6 @@ swap_page_from_pte(pte_t *pte)
   *pte &= ~PTE_P;
   *pte |= PTE_SWAPPED;
   cprintf("SWAPPED page pte %x\n", *pte);
-
-  // Invalidate the TLB corresponding to the swapped virtual page.
-  // Reloading the cr3 register should cause a TLB Flush
-  lcr3(V2P(myproc()->pgdir));
-
-  // Free the physical page.
-  kfree((char *)PTE_ADDR(*pte));
 }
 
 /* Select a victim and swap the contents to the disk.
