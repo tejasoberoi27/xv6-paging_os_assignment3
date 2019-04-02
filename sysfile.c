@@ -457,18 +457,6 @@ sys_bstat(void)
   return numallocblocks;
 }
 
-static pte_t *
-walkpgdir(pde_t *pgdir, const void *va)
-{
-  pde_t *pde;
-  pte_t *pgtab;
-
-  pde = &pgdir[PDX(va)];
-  if(*pde & PTE_P) pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
-  else panic("HAW; Swapping a Page which is NOT PRESENT!");
-  return &pgtab[PTX(va)];
-}
-
 /* swap system call handler.
  * 
  * takes a user virtual address of the current process to swap
@@ -476,7 +464,6 @@ walkpgdir(pde_t *pgdir, const void *va)
 int
 sys_swap(void)
 {
-  panic("sys_swap not tested yet");
   uint addr;
 
   // Fetch the 0th 32-bit system call argument 
@@ -485,7 +472,8 @@ sys_swap(void)
     return -1;
 
   // swap addr
-  pte_t *pte = walkpgdir(myproc()->pgdir,(void *)addr);
+  // pte_t *pte = walkpgdir(myproc()->pgdir,(void *)addr);
+  pte_t *pte = select_a_victim(myproc()->pgdir);
   swap_page_from_pte(pte);
 
   return 0;
