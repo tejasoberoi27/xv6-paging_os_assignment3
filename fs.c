@@ -101,6 +101,7 @@ bfree(int dev, uint b)
 void
 bfree_page(int dev, uint b)
 {
+  numallocblocks--;
   begin_op();
   int i;
   for(i=0; i<8; i++)
@@ -115,6 +116,7 @@ bfree_page(int dev, uint b)
 uint
 balloc_page(uint dev)
 {
+  numallocblocks++;
   int prevBlock = -1, counter = 0;
 
   begin_op();

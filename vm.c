@@ -278,6 +278,9 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
       kfree(v);
       *pte = 0;
     }
+    else if((*pte & PTE_SWAPPED)!=0){
+      bfree_page(1,(*pte)>>12);
+    }
   }
   return newsz;
 }
@@ -296,6 +299,9 @@ freevm(pde_t *pgdir)
     if(pgdir[i] & PTE_P){
       char * v = P2V(PTE_ADDR(pgdir[i]));
       kfree(v);
+    } else if(pgdir[i] & PTE_SWAPPED){
+      uint blkNumber = (pgdir[i])>>12;
+      bfree_page(1,blkNumber);
     }
   }
   kfree((char*)pgdir);

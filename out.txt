@@ -1,0 +1,1453 @@
+dd if=/dev/zero of=xv6.img count=10000
+dd if=bootblock of=xv6.img conv=notrunc
+dd if=kernel of=xv6.img seek=1 conv=notrunc
+qemu-system-i386 -serial mon:stdio -drive file=fs.img,index=1,media=disk,format=raw -drive file=xv6.img,index=0,media=disk,format=raw -smp 2 -m 4 
+xv6...
+cpu1: starting 1
+cpu0: starting 0
+sb: size 128000 nblocks 127910 ninodes 200 nlog 30 logstart 2 inodestart 32 bmap start 58
+init: starting sh
+$ memtest1
+memtest starting
+mem test
+chk1
+chk2: 0
+chk2: 1
+chk2: 2
+chk2: 3
+chk2: 4
+chk2: 5
+chk2: 6
+chk2: 7
+chk2: 8
+chk2: 9
+chk2: 10
+chk2: 11
+chk2: 12
+chk2: 13
+chk2: 14
+chk2: 15
+chk2: 16
+chk2: 17
+chk2: 18
+chk2: 19
+chk2: 20
+chk2: 21
+chk2: 22
+chk2: 23
+chk2: 24
+chk2: 25
+chk2: 26
+chk2: 27
+chk2: 28
+chk2: 29
+chk2: 30
+chk2: 31
+chk2: 32
+chk2: 33
+chk2: 34
+chk2: 35
+chk2: 36
+chk2: 37
+chk2: 38
+chk2: 39
+chk2: 40
+chk2: 41
+chk2: 42
+chk2: 43
+chk2: 44
+chk2: 45
+chk2: 46
+chk2: 47
+chk2: 48
+chk2: 49
+chk2: 50
+chk2: 51
+chk2: 52
+chk2: 53
+chk2: 54
+chk2: 55
+chk2: 56
+chk2: 57
+chk2: 58
+chk2: 59
+chk2: 60
+chk2: 61
+chk2: 62
+chk2: 63
+chk2: 64
+chk2: 65
+chk2: 66
+chk2: 67
+chk2: 68
+chk2: 69
+chk2: 70
+chk2: 71
+chk2: 72
+chk2: 73
+chk2: 74
+chk2: 75
+chk2: 76
+chk2: 77
+chk2: 78
+chk2: 79
+chk2: 80
+chk2: 81
+chk2: 82
+chk2: 83
+chk2: 84
+chk2: 85
+chk2: 86
+chk2: 87
+chk2: 88
+chk2: 89
+chk2: 90
+chk2: 91
+chk2: 92
+chk2: 93
+chk2: 94
+chk2: 95
+chk2: 96
+chk2: 97
+chk2: 98
+chk2: 99
+chk2: 100
+chk2: 101
+chk2: 102
+chk2: 103
+chk2: 104
+chk2: 105
+chk2: 106
+chk2: 107
+chk2: 108
+chk2: 109
+chk2: 110
+chk2: 111
+chk2: 112
+chk2: 113
+chk2: 114
+chk2: 115
+chk2: 116
+chk2: 117
+chk2: 118
+chk2: 119
+chk2: 120
+chk2: 121
+chk2: 122
+chk2: 123
+chk2: 124
+chk2: 125
+chk2: 126
+chk2: 127
+chk2: 128
+chk2: 129
+chk2: 130
+chk2: 131
+chk2: 132
+chk2: 133
+chk2: 134
+chk2: 135
+chk2: 136
+chk2: 137
+chk2: 138
+chk2: 139
+chk2: 140
+chk2: 141
+chk2: 142
+chk2: 143
+chk2: 144
+chk2: 145
+chk2: 146
+chk2: 147
+chk2: 148
+chk2: 149
+chk2: 150
+chk2: 151
+chk2: 152
+chk2: 153
+chk2: 154
+chk2: 155
+chk2: 156
+chk2: 157
+chk2: 158
+chk2: 159
+chk2: 160
+chk2: 161
+chk2: 162
+chk2: 163
+chk2: 164
+chk2: 165
+chk2: 166
+chk2: 167
+chk2: 168
+chk2: 169
+chk2: 170
+chk2: 171
+chk2: 172
+chk2: 173
+chk2: 174
+chk2: 175
+chk2: 176
+chk2: 177
+chk2: 178
+chk2: 179
+chk2: 180
+chk2: 181
+chk2: 182
+chk2: 183
+chk2: 184
+chk2: 185
+chk2: 186
+chk2: 187
+chk2: 188
+chk2: 189
+chk2: 190
+chk2: 191
+chk2: 192
+chk2: 193
+chk2: 194
+chk2: 195
+chk2: 196
+chk2: 197
+chk2: 198
+chk2: 199
+chk2: 200
+chk2: 201
+chk2: 202
+chk2: 203
+chk2: 204
+chk2: 205
+chk2: 206
+chk2: 207
+chk2: 208
+chk2: 209
+chk2: 210
+chk2: 211
+chk2: 212
+chk2: 213
+chk2: 214
+chk2: 215
+chk2: 216
+chk2: 217
+chk2: 218
+chk2: 219
+chk2: 220
+chk2: 221
+chk2: 222
+chk2: 223
+chk2: 224
+chk2: 225
+chk2: 226
+chk2: 227
+chk2: 228
+chk2: 229
+chk2: 230
+chk2: 231
+chk2: 232
+chk2: 233
+chk2: 234
+chk2: 235
+chk2: 236
+chk2: 237
+chk2: 238
+chk2: 239
+chk2: 240
+chk2: 241
+chk2: 242
+chk2: 243
+chk2: 244
+chk2: 245
+chk2: 246
+chk2: 247
+chk2: 248
+chk2: 249
+chk2: 250
+chk2: 251
+chk2: 252
+chk2: 253
+chk2: 254
+chk2: 255
+chk2: 256
+chk2: 257
+chk2: 258
+chk2: 259
+chk2: 260
+chk2: 261
+chk2: 262
+chk2: 263
+chk2: 264
+chk2: 265
+chk2: 266
+chk2: 267
+chk2: 268
+chk2: 269
+chk2: 270
+chk2: 271
+chk2: 272
+chk2: 273
+chk2: 274
+chk2: 275
+chk2: 276
+chk2: 277
+chk2: 278
+chk2: 279
+chk2: 280
+chk2: 281
+chk2: 282
+chk2: 283
+chk2: 284
+chk2: 285
+chk2: 286
+chk2: 287
+chk2: 288
+chk2: 289
+chk2: 290
+chk2: 291
+chk2: 292
+chk2: 293
+chk2: 294
+chk2: 295
+chk2: 296
+chk2: 297
+chk2: 298
+chk2: 299
+chk2: 300
+chk2: 301
+chk2: 302
+chk2: 303
+chk2: 304
+chk2: 305
+chk2: 306
+chk2: 307
+chk2: 308
+chk2: 309
+chk2: 310
+chk2: 311
+chk2: 312
+chk2: 313
+chk2: 314
+chk2: 315
+chk2: 316
+chk2: 317
+chk2: 318
+chk2: 319
+chk2: 320
+chk2: 321
+chk2: 322
+chk2: 323
+chk2: 324
+chk2: 325
+chk2: 326
+chk2: 327
+chk2: 328
+chk2: 329
+chk2: 330
+chk2: 331
+chk2: 332
+chk2: 333
+chk2: 334
+chk2: 335
+chk2: 336
+chk2: 337
+chk2: 338
+chk2: 339
+chk2: 340
+chk2: 341
+chk2: 342
+chk2: 343
+chk2: 344
+chk2: 345
+chk2: 346
+chk2: 347
+chk2: 348
+chk2: 349
+chk2: 350
+chk2: 351
+chk2: 352
+chk2: 353
+chk2: 354
+chk2: 355
+chk2: 356
+chk2: 357
+chk2: 358
+chk2: 359
+chk2: 360
+chk2: 361
+chk2: 362
+chk2: 363
+chk2: 364
+chk2: 365
+chk2: 366
+chk2: 367
+chk2: 368
+chk2: 369
+chk2: 370
+chk2: 371
+chk2: 372
+chk2: 373
+chk2: 374
+chk2: 375
+chk2: 376
+chk2: 377
+chk2: 378
+chk2: 379
+chk2: 380
+chk2: 381
+chk2: 382
+chk2: 383
+chk2: 384
+chk2: 385
+chk2: 386
+chk2: 387
+chk2: 388
+chk2: 389
+chk2: 390
+chk2: 391
+chk2: 392
+chk2: 393
+chk2: 394
+chk2: 395
+chk2: 396
+chk2: 397
+chk2: 398
+chk2: 399
+chk2: 400
+chk2: 401
+chk2: 402
+chk2: 403
+chk2: 404
+chk2: 405
+chk2: 406
+chk2: 407
+chk2: 408
+chk2: 409
+chk2: 410
+chk2: 411
+chk2: 412
+chk2: 413
+chk2: 414
+chk2: 415
+chk2: 416
+chk2: 417
+chk2: 418
+chk2: 419
+chk2: 420
+chk2: 421
+chk2: 422
+chk2: 423
+chk2: 424
+chk2: 425
+chk2: 426
+chk2: 427
+chk2: 428
+chk2: 429
+chk2: 430
+chk2: 431
+chk2: 432
+chk2: 433
+chk2: 434
+chk2: 435
+chk2: 436
+chk2: 437
+chk2: 438
+chk2: 439
+chk2: 440
+chk2: 441
+chk2: 442
+chk2: 443
+chk2: 444
+chk2: 445
+chk2: 446
+chk2: 447
+chk2: 448
+chk2: 449
+chk2: 450
+chk2: 451
+chk2: 452
+chk2: 453
+chk2: 454
+chk2: 455
+chk2: 456
+chk2: 457
+chk2: 458
+chk2: 459
+chk2: 460
+chk2: 461
+chk2: 462
+chk2: 463
+chk2: 464
+chk2: 465
+chk2: 466
+chk2: 467
+chk2: 468
+chk2: 469
+chk2: 470
+chk2: 471
+chk2: 472
+chk2: 473
+chk2: 474
+chk2: 475
+chk2: 476
+chk2: 477
+chk2: 478
+chk2: 479
+chk2: 480
+chk2: 481
+chk2: 482
+chk2: 483
+chk2: 484
+chk2: 485
+chk2: 486
+chk2: 487
+chk2: 488
+chk2: 489
+chk2: 490
+chk2: 491
+chk2: 492
+chk2: 493
+chk2: 494
+chk2: 495
+chk2: 496
+chk2: 497
+chk2: 498
+chk2: 499
+chk2: 500
+chk2: 501
+chk2: 502
+chk2: 503
+chk2: 504
+chk2: 505
+chk2: 506
+chk2: 507
+chk2: 508
+chk2: 509
+chk2: 510
+chk2: 511
+chk2: 512
+chk2: 513
+chk2: 514
+chk2: 515
+chk2: 516
+chk2: 517
+chk2: 518
+chk2: 519
+chk2: 520
+chk2: 521
+chk2: 522
+chk2: 523
+chk2: 524
+chk2: 525
+chk2: 526
+chk2: 527
+chk2: 528
+chk2: 529
+chk2: 530
+chk2: 531
+chk2: 532
+chk2: 533
+chk2: 534
+chk2: 535
+chk2: 536
+chk2: 537
+chk2: 538
+chk2: 539
+chk2: 540
+chk2: 541
+chk2: 542
+chk2: 543
+chk2: 544
+chk2: 545
+chk2: 546
+chk2: 547
+chk2: 548
+chk2: 549
+chk2: 550
+chk2: 551
+chk2: 552
+chk2: 553
+chk2: 554
+chk2: 555
+chk2: 556
+chk2: 557
+chk2: 558
+chk2: 559
+chk2: 560
+chk2: 561
+chk2: 562
+chk2: 563
+chk2: 564
+chk2: 565
+chk2: 566
+chk2: 567
+chk2: 568
+chk2: 569
+chk2: 570
+chk2: 571
+chk2: 572
+chk2: 573
+chk2: 574
+chk2: 575
+chk2: 576
+chk2: 577
+chk2: 578
+chk2: 579
+chk2: 580
+chk2: 581
+chk2: 582
+chk2: 583
+chk2: 584
+chk2: 585
+chk2: 586
+chk2: 587
+chk2: 588
+chk2: 589
+chk2: 590
+chk2: 591
+chk2: 592
+chk2: 593
+chk2: 594
+chk2: 595
+chk2: 596
+chk2: 597
+chk2: 598
+chk2: 599
+chk2: 600
+chk2: 601
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+chk2: 602
+chk2: 603
+chk2: 604
+chk2: 605
+chk2: 606
+chk2: 607
+chk3
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk4
+chk5
+mem ok 10
+$ m7777em     em   emtest3
+num swapped blocks:0
+$ m7777em      emtest2
+memtest starting
+mem test
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+clearing access bit
+mem ok 69
+$ m7777em      emtest3
+num swapped blocks:0
+$ e7777x      e7777e7777eeee7777bnmsfdgbmdfsng7dsg7dfsgmbnmdsgb 7777                7777 777 7777 7777 7777 7777 7777 7777      777    7 7777 7777 7777 7777 7   77 7                                                                 
