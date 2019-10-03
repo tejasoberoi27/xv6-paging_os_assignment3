@@ -60,10 +60,12 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
     if(*pde & PTE_P){
         pgtab = (pte_t*)P2V(PTE_ADDR(*pde));
     } else {
-        if(!alloc || (pgtab = (pte_t*)kalloc()) == 0)
-            return 0;
+        if(!alloc) return 0;
+        if((pgtab = (pte_t*)kalloc()) == 0) return 0;
+        
         // Make sure all those PTE_P bits are zero.
         memset(pgtab, 0, PGSIZE);
+        
         // The permissions here are overly generous, but they can
         // be further restricted by the permissions in the page table
         // entries, if necessary.
